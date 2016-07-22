@@ -1,0 +1,1 @@
+A library for transparently handling SOCKS proxies in Python.
