@@ -22,9 +22,10 @@ class Socks5Client(client.Client):
 
         client.Client.__init__(self, **kwargs)
 
-    def connect(self, target_address):
-        target_address, port = target_address
-        
+    def establish(self, target_address, port, sock_obj=None):
+        if sock_obj is None:
+            sock_obj = self
+            
         try:
             if self.socket_family == socket.AF_INET:
                 target_address = V4Address.from_string(target_address)
@@ -47,10 +48,8 @@ class Socks5Client(client.Client):
         for i in xrange(len(auth_methods)):
             hello_packet.auth_methods[i].set_value(auth_methods[i])
 
-        super(Socks5Client, self).connect((self.address, self.port))
-
-        self.send(hello_packet.read_memory())
-        response_data = self.recv(1024)
+        sock_obj.send(hello_packet.read_memory())
+        response_data = sock_obj.recv(1024)
         response_packet = socks5.Socks5HelloResponse(string_data=response_data)
 
         if int(response_packet.authentication) == socks5.Socks5HelloResponse.AUTH_INVALID:
@@ -60,7 +59,7 @@ class Socks5Client(client.Client):
             raise Socks5ClientError('authentication method not requested')
         
         if int(response_packet.authentication) == socks5.Socks5HelloRequest.AUTH_USERNAME_PASSWORD:
-            self.authenticate()
+            self.authenticate(sock_obj)
 
         # otherwise it's no authentication
         connection_packet = socks5.Socks5ConnectionRequest()
@@ -82,12 +81,15 @@ class Socks5Client(client.Client):
 
         connection_packet.port.set_value(port)
 
-        self.send(connection_packet.read_memory())
-        response_data = self.recv(1024)
+        sock_obj.send(connection_packet.read_memory())
+        response_data = sock_obj.recv(1024)
         response_packet = socks5.Socks5ConnectionResponse(string_data=response_data)
 
         if not int(response_packet.status) == 0:
             raise Socks5ClientError('server responded with an error')
 
-    def authenticate(self):
+    def authenticate(self, sock_obj=None):
+        if sock_obj is None:
+            sock_obj = self
+            
         raise Socks5ClientError('username/password authentication not yet implemented')

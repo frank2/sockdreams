@@ -16,4 +16,7 @@ class Socks4Response(Structure.simple([
         ,('status', Byte)
         ,('port', Word, {'endianness': Word.BIG_ENDIAN})
         ,('ip', Dword, {'endianness': Dword.BIG_ENDIAN})])):
-    pass
+    STATUS_GRANTED = 0x5A
+    STATUS_FAILED = 0x5B
+    STATUS_IDENTD_NOT_RUNNING = 0x5C
+    STATUS_IDENTD_FAILURE = 0x5D

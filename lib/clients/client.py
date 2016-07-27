@@ -48,3 +48,10 @@ class Client(socket.socket):
             raise ClientError('bad port value given')
         
         socket.socket.__init__(self, self.socket_family, self.socket_type)
+
+    def connect(self, address):
+        super(Client, self).connect((self.address, self.port))
+        self.establish(address[0], address[1], self)
+
+    def establish(self, address, port, sock_obj=None):
+        raise ClientError('establish method not implemented')
