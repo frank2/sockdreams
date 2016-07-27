@@ -3,7 +3,7 @@
 import socket
 import re
 
-from sockdreams.client import client
+from sockdreams.clients import client
 
 class HTTPClientError(Exception):
     pass
@@ -13,8 +13,8 @@ class HTTPClient(client.Client):
         if sock_obj is None:
             sock_obj = self
 
-        connection_string = ('CONNECT %s:%d HTTP/1.1\r\n' % (address, port)
-                             'Host: %s:%d\r\n\r\n' % (address, port))
+        connection_string = ('CONNECT %s:%d HTTP/1.1\r\n'
+                             'Host: %s:%d\r\n\r\n') % (address, port, address, port)
 
         sock_obj.send(connection_string)
         data = sock_obj.recv(1024)
