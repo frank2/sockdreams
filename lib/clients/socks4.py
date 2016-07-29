@@ -12,13 +12,12 @@ class Socks4ClientError(Exception):
 
 class Socks4Client(client.Client):
     USERNAME = None
-    COMMAND = None
     REQUEST_PACKET = socks4.Socks4Request # so we can subclass Socks4a
 
     def __init__(self, **kwargs):
         self.username = kwargs.setdefault('username', self.USERNAME)
-        self.command = kwargs.setdefault('command', self.COMMAND)
         self.request_packet = kwargs.setdefault('request_packet', self.REQUEST_PACKET)
+        self.command = None
 
         client.Client.__init__(self, **kwargs)
 
@@ -49,6 +48,7 @@ class Socks4Client(client.Client):
         if sock_obj is None:
             sock_obj = self
 
+        self.command = socks4.Socks4Request.COMMAND_TCP_STREAM
         request_packet = self.build_request(target_address, port)
 
         sock_obj.send(request_packet.read_memory())
