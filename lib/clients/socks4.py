@@ -53,6 +53,10 @@ class Socks4Client(client.Client):
 
         sock_obj.send(request_packet.read_memory())
         response_data = sock_obj.recv(1024)
+
+        if not len(response_data):
+            raise Socks4ClientError('got no response from the server')
+        
         response_packet = socks4.Socks4Response(string_data=response_data)
 
         if not int(response_packet.status) == socks4.Socks4Response.STATUS_GRANTED:

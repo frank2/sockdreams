@@ -48,6 +48,10 @@ class Socks5Client(client.Client):
 
         sock_obj.send(hello_packet.read_memory())
         response_data = sock_obj.recv(1024)
+
+        if not len(response_data):
+            raise Socks5ClientError('got no response from the server')
+        
         response_packet = socks5.Socks5HelloResponse(string_data=response_data)
 
         if int(response_packet.authentication) == socks5.Socks5HelloResponse.AUTH_INVALID:
