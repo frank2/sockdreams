@@ -11,12 +11,10 @@ class Socks5ClientError(Exception):
     pass
 
 class Socks5Client(client.Client):
-    DOMAIN = None
     USERNAME = None
     PASSWORD = None
 
     def __init__(self, **kwargs):
-        self.domain = kwargs.setdefault('domain', self.DOMAIN)
         self.username = kwargs.setdefault('username', self.USERNAME)
         self.password = kwargs.setdefault('password', self.PASSWORD)
 
