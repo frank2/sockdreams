@@ -55,3 +55,13 @@ class Client(socket.socket):
 
     def establish(self, address, port, sock_obj=None):
         raise ClientError('establish method not implemented')
+
+    @classmethod
+    def static_declaration(cls, **kwargs):
+        class StaticClient(cls):
+            SOCKET_FAMILY = kwargs.setdefault('socket_family', cls.SOCKET_FAMILY)
+            SOCKET_TYPE = kwargs.setdefault('socket_type', cls.SOCKET_TYPE)
+            ADDRESS = kwargs.setdefault('address', cls.ADDRESS)
+            PORT = kwargs.setdefault('port', cls.PORT)
+
+        return StaticClient

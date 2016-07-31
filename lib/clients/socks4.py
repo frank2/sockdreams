@@ -61,3 +61,14 @@ class Socks4Client(client.Client):
 
         if not int(response_packet.status) == socks4.Socks4Response.STATUS_GRANTED:
             raise Socks4ClientError('client negotiation failed')
+
+    @classmethod
+    def static_declaration(cls, **kwargs):
+        base_class = super(Socks4Client, cls).static_declaration(**kwargs)
+
+        class StaticSocks4Client(base_class):
+            USERNAME = kwargs.setdefault('username', cls.USERNAME)
+            REQUEST_PACKET = kwargs.setdefault('request_packet', cls.REQUEST_PACKET)
+
+        return StaticSocks4Client
+            

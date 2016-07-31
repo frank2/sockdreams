@@ -95,3 +95,13 @@ class Socks5Client(client.Client):
             sock_obj = self
             
         raise Socks5ClientError('username/password authentication not yet implemented')
+
+    @classmethod
+    def static_declaration(cls, **kwargs):
+        base_class = super(Socks5Client, cls).static_declaration(**kwargs)
+
+        class StaticSocks5Client(base_class):
+            USERNAME = kwargs.setdefault('username', cls.USERNAME)
+            PASSWORD = kwargs.setdefault('password', cls.PASSWORD)
+
+        return StaticSocks5Client
