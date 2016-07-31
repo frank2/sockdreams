@@ -82,7 +82,6 @@ class Socks5Client(client.Client):
             connection_packet.destination.address.type_instance().set_string_value(target_domain)
 
         connection_packet.port.set_value(port)
-
         sock_obj.send(connection_packet.read_memory())
         response_data = sock_obj.recv(1024)
         response_packet = socks5.Socks5ConnectionResponse(string_data=response_data)

@@ -24,9 +24,11 @@ class Socks5String(Structure.simple([
 # the destination isn't really a union because the size of the object is dependent
 # on its type
 class Socks5Destination(List):
-    BASE_DECLARATIONS = [[Declaration(base_class=Dword)]
+    BASE_DECLARATIONS = [[Declaration(base_class=Dword
+                                      ,args={'endianness': Dword.BIG_ENDIAN})]
                          ,[Declaration(base_class=Socks5String)]
-                         ,[Declaration(base_class=Oword)]]
+                         ,[Declaration(base_class=Oword
+                                       ,args={'endianness': Oword.BIG_ENDIAN})]]
     TYPE_IPV4 = 0x1
     TYPE_DOMAIN = 0x3
     TYPE_IPV6 = 0x4
