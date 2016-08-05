@@ -41,7 +41,7 @@ class Client(socket.socket):
         if self.port is None:
             raise ClientError('no client port given')
 
-        if not isinstance(self.port, (int, long)):
+        if not isinstance(self.port, int):
             raise ClientError('port must be a number')
 
         if not 0 <= self.port <= 65535:

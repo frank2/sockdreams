@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import clients
-import packets
+from sockdreams import clients
+from sockdreams import packets
 
 __all__ = ['clients', 'packets']

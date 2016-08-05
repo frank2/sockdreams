@@ -36,7 +36,7 @@ class Socks5Destination(List):
 
     def __init__(self, **kwargs):
         self.type = kwargs.setdefault('type', self.TYPE)
-        self.base_declarations = map(lambda x: map(Declaration.copy, x), kwargs.setdefault('base_declarations', self.BASE_DECLARATIONS))
+        self.base_declarations = [list(map(Declaration.copy, x)) for x in kwargs.setdefault('base_declarations', self.BASE_DECLARATIONS)]
         self.copy_declarations = kwargs.setdefault('copy_declarations', self.COPY_DECLARATIONS)
        
         if not self.type in [self.TYPE_IPV4, self.TYPE_DOMAIN, self.TYPE_IPV6]:
@@ -62,7 +62,7 @@ class Socks5Destination(List):
 
         decl_hash = hash(new_decls[0])
 
-        if self.instance_map.has_key(decl_hash):
+        if decl_hash in self.instance_map:
             self.instance_map[decl_hash].invalidated = True
             del self.instance_map[decl_hash]
 

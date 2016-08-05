@@ -5,7 +5,7 @@ from paranoia.base.declaration import Declaration
 from . import socks4
 
 class Socks4aRequest(socks4.Socks4Request):
-    FIELDS = map(lambda x: (x[0], x[1].copy()), socks4.Socks4Request.FIELDS[:]) + \
+    FIELDS = [(x[0], x[1].copy()) for x in socks4.Socks4Request.FIELDS[:]] + \
              [('domain', Declaration(base_class=String))]
     
 class Socks4aResponse(socks4.Socks4Response):

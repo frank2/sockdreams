@@ -43,7 +43,7 @@ class Socks5Client(client.Client):
         
         hello_packet.auth_method_size.set_value(len(auth_methods))
 
-        for i in xrange(len(auth_methods)):
+        for i in range(len(auth_methods)):
             hello_packet.auth_methods[i].set_value(auth_methods[i])
 
         sock_obj.send(hello_packet.read_memory())
